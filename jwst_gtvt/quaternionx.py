@@ -204,26 +204,26 @@ class Quaternion:
       self.q2 = V.y
       self.q3 = V.z
       self.q4 = q4
-      
+
    def __str__(self):
        """Returns a string representation of the quaternion."""
-       
+
        return('Quaternion: q1: %.3f, q2: %.3f, q3: %.3f, q4: %.3f'\
                % (self.q1, self.q2, self.q3, self.q4))
-      
+
    def length(self):
       """Returns length of the Q """
       return math.sqrt(self.q1*self.q1 + self.q2*self.q2 + self.q3*self.q3 + self.q4*self.q4)
-   
+
    def normalize(self):
       """Returns a copy of the Q normalized """
       scale = self.length()
       return Quaternion(rot.Vector(self.q1/scale,self.q2/scale,self.q3/scale),self.q4/scale)
-   
+
    def conjugate(self):
       """Returns a copy of the conjugated Q """
       return Quaternion(rot.Vector(-self.q1,-self.q2,-self.q3),self.q4)
-   
+
    def __mul__(self,rs):
       """Defines Q*Q for quaternion multiplication """
       Q = Quaternion(rot.Vector(0.,0.,0.),0.)
@@ -233,13 +233,13 @@ class Quaternion:
       Q.q3 = rs.q3 * self.q4 + self.q3 * rs.q4 + (self.q1 * rs.q2 - self.q2 * rs.q1)
       Q.q4 = self.q4 * rs.q4 - (self.q1 * rs.q1 + self.q2 * rs.q2 + self.q3 * rs.q3)
       return Q
-      
+
    def cnvrt(self,V):
       """Rotates a vector from the starting frame to the ending frame defined by the Q """
       QV = Qmake_a_point(V)
       QV = self * QV * self.conjugate()
       return rot.Vector(QV.q1,QV.q2,QV.q3)
-      
+
    def inv_cnvrt(self,V):
       """Rotates a vector from the ending frame to the starting frame defined by the Q"""
       QV = Qmake_a_point(V)
@@ -252,53 +252,53 @@ class Quaternion:
       self.q2 = V.y * S
       self.q3 = V.z * S
       self.q4 = cos(angle/2.)
-      
+
    def set_as_QX(self,angle):
       """Sets quaterion in place like QX function"""
       self.q1 = sin(-angle/2.)
       self.q2 = 0.
       self.q3 = 0.
       self.q4 = cos(angle/2.)
-      
+
    def set_as_QY(self,angle):
       """Sets quaterion in place like QY function"""
       self.q1 = 0.
       self.q2 = sin(-angle/2.)
       self.q3 = 0.
       self.q4 = cos(angle/2.)
-      
+
    def set_as_QZ(self,angle):
       """Sets quaterion in place like QZ function"""
       self.q1 = 0.
       self.q2 = 0.
       self.q3 = sin(-angle/2.)
       self.q4 = cos(angle/2.)
-      
+
    def set_as_mult(self,QQ1,QQ2):
       """Sets self as QQ1*QQ2 in place for quaternion multiplication """
       self.q1 = QQ2.q1 * QQ1.q4 + QQ1.q1 * QQ2.q4 + (QQ1.q2 * QQ2.q3 - QQ1.q3 * QQ2.q2)
       self.q2 = QQ2.q2 * QQ1.q4 + QQ1.q2 * QQ2.q4 + (QQ1.q3 * QQ2.q1 - QQ1.q1 * QQ2.q3)
       self.q3 = QQ2.q3 * QQ1.q4 + QQ1.q3 * QQ2.q4 + (QQ1.q1 * QQ2.q2 - QQ1.q2 * QQ2.q1)
       self.q4 = QQ1.q4 * QQ2.q4 - (QQ1.q1 * QQ2.q1 + QQ1.q2 * QQ2.q2 + QQ1.q3 * QQ2.q3)
-      
+
    def set_as_point(self,V):
       self.q1 = V.x
       self.q2 = V.y
       self.q3 = V.z
       self.q4 = 0.
-            
+
    def set_equal(self, Q):
       """Assigns values from other Q to this one. """
       self.q1 = Q.q1
       self.q2 = Q.q2
       self.q3 = Q.q3
       self.q4 = Q.q4
-      
+
    def set_as_conjugate(self):
       """Assigns conjugate values in place. """
       self.q1 *= -1.
       self.q2 *= -1.
       self.q3 *= -1.
 
-      
-   
+
+

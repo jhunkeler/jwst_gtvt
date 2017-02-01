@@ -12,7 +12,7 @@ from .quaternionx import *
 from . import astro_funcx as astro_func
 
 D2R = pi/180.  #degrees to radians
-R2D = 180. / pi #radians to degrees 
+R2D = 180. / pi #radians to degrees
 PI2 = 2. * pi   # 2 pi
 unit_limit = lambda x: min(max(-1.,x),1.) # forces value to be in [-1,1]
 MIN_SUN_ANGLE = 84.8 * D2R  #minimum Sun angle, in radians
@@ -58,7 +58,7 @@ class Ephemeris:
             if not_there:
                 print("This ephemeris does not use the Sun as the center body.  It should not be used.")
                 exit(-1)
-                
+
             while fin[istart][:5] != "$$EOE":
                 item=fin[istart].strip()
                 item = item.split(',')
@@ -104,7 +104,7 @@ class Ephemeris:
                 self.ylist.append(y)
                 self.zlist.append(z)
                 if self.amin==0.:
-                    self.amin = adate 
+                    self.amin = adate
         self.amax = adate
         ##yp = spline(xa,ya,0.,0.)
         #Saving spline parameters
@@ -113,41 +113,41 @@ class Ephemeris:
         #self.zlistp = spline(self.datelist,self.zlist,1.e31,1.e31)
         del fin
         #print len(self.datelist),len(self.xlist),len(self.ylist),len(self.zlist)
-        
+
     def report_ephemeris (self, limit=100000, pathname=None):
         """Prints a formatted report of the ephemeris.
-        
+
         If a limit is specified, no more than the maximum number of records are reported.
         pathname = optional path to a file to hold the report."""
-        
+
         num_to_report = min(limit, len(self.datelist))
-        
+
         if (pathname):
             dest = open(pathname, 'w')
             print('#Generated %s\n' %(time.ctime()), file=dest)
         else:
             dest = sys.stdout  #defaults to standard output
-            
+
         print('%17s  %14s  %14s  %14s\n' %('DATE      ', 'X (KM)   ', 'Y (KM)   ', 'Z (KM)   '), file=dest)
-        
+
         for num in range(num_to_report):
             date = self.datelist[num]
             x = self.xlist[num]
             y = self.ylist[num]
             z = self.zlist[num]
-            
+
             print('%17s  %14.3f  %14.3f  %14.3f' %(time2.display_date(date), x, y, z), file=dest)
-            
+
         if (pathname):
             dest.close()   #Clean up
-           
+
     def pos(self,adate):
         cal_days = adate - self.datelist[0]
         indx = int(cal_days)
         frac = cal_days - indx
-        x = (self.xlist[indx+1] - self.xlist[indx])*frac + self.xlist[indx]  
-        y = (self.ylist[indx+1] - self.ylist[indx])*frac + self.ylist[indx]  
-        z = (self.zlist[indx+1] - self.zlist[indx])*frac + self.zlist[indx]  
+        x = (self.xlist[indx+1] - self.xlist[indx])*frac + self.xlist[indx]
+        y = (self.ylist[indx+1] - self.ylist[indx])*frac + self.ylist[indx]
+        z = (self.zlist[indx+1] - self.zlist[indx])*frac + self.zlist[indx]
         return Vector(x,y,z)
         #alower = float(int(adate - 0.5)) + 0.5
         #if alower>= self.amin and adate>= self.amin and adate<=self.amax:
@@ -182,11 +182,11 @@ class Ephemeris:
 
     def is_valid(self,date,coord_1,coord_2,V3pa):
         """Indicates whether an attitude is valid at a given date."""
-        
+
         #First check that the date is within the time interval of the ephemeris.
         if ((date < self.amin) or (date > self.amax)):
             return False
-            
+
         (sun_1,sun_2) = self.sun_pos(date)
         d = astro_func.dist(coord_1,coord_2,sun_1,sun_2)
         vehicle_pitch = pi/2 - d   #see JI memo from May 2006
@@ -249,4 +249,4 @@ class Ephemeris:
 
 
 
-    
+

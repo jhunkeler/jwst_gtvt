@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore', category=UserWarning, append=True)
 warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
 
 D2R = math.pi / 180.  #degrees to radians
-R2D = 180. / math.pi #radians to degrees 
+R2D = 180. / math.pi #radians to degrees
 PI2 = 2. * math.pi   # 2 pi
 unit_limit = lambda x: min(max(-1.,x),1.) # forces value to be in [-1,1]
 
@@ -82,7 +82,7 @@ def main(args):
     table_output=None
     if args.save_table is not None:
         table_output = open(args.save_table, 'w')
-        
+
     NRCALL_FULL_V2IdlYang = -0.0265
     NRS_FULL_MSA_V3IdlYang = 137.4874
     NIS_V3IdlYang = -0.57
@@ -120,7 +120,7 @@ def main(args):
 
 
     pa = 'X'
-    if args.ra.find(':')>-1:  #format is hh:mm:ss.s or  dd:mm:ss.s  
+    if args.ra.find(':')>-1:  #format is hh:mm:ss.s or  dd:mm:ss.s
       ra  = convert_ddmmss_to_float(args.ra) * 15. * D2R
       dec   = convert_ddmmss_to_float(args.dec) * D2R
     else: #format is decimal
@@ -137,7 +137,7 @@ def main(args):
 
     if args.v3pa is not None:
         pa     = float(args.v3pa) * D2R
-    print("Checked interval [{}, {}]".format(Time(search_start, format='mjd', out_subfmt='date').isot, 
+    print("Checked interval [{}, {}]".format(Time(search_start, format='mjd', out_subfmt='date').isot,
         Time(search_start+span, format='mjd', out_subfmt='date').isot), file=table_output)
     if pa == "X":
         iflag_old = A_eph.in_FOR(search_start,ra,dec)
@@ -217,13 +217,13 @@ def main(args):
         print("                V3PA          NIRCam           NIRSpec         NIRISS           MIRI          FGS", file=table_output)
         print("   Date      min    max      min    max       min    max     min    max      min    max      min    max", file=table_output)
               #58849.0 264.83 275.18 264.80 264.80  42.32  42.32 264.26 264.26 269.84 269.84 263.58 263.58
-        
+
         times = []
         minV3PA_data = []
         maxV3PA_data = []
         minNIRCam_PA_data = []
         maxNIRCam_PA_data = []
-        minNIRSpec_PA_data = [] 
+        minNIRSpec_PA_data = []
         maxNIRSpec_PA_data = []
         minNIRISS_PA_data = []
         maxNIRISS_PA_data = []
@@ -240,12 +240,12 @@ def main(args):
                 if not tgt_is_in:
                     print("", file=table_output)
                 tgt_is_in = True
-                
+
                 V3PA = A_eph.normal_pa(atime,ra,dec)*R2D
                 (sun_ra, sun_dec) = A_eph.sun_pos(atime)
                 max_boresight_roll = allowed_max_vehicle_roll(sun_ra, sun_dec, ra, dec) * R2D
                 #sun_ang = angular_sep(sun_ra, sun_dec, ra, dec) * R2D
-                
+
                 minV3PA = bound_angle(V3PA - max_boresight_roll)
                 maxV3PA = bound_angle(V3PA + max_boresight_roll)
                 minNIRCam_PA = bound_angle(V3PA - max_boresight_roll + NRCALL_FULL_V2IdlYang)
@@ -264,14 +264,14 @@ def main(args):
                 maxV3PA_data.append(maxV3PA)
                 minNIRCam_PA_data.append(minNIRCam_PA)
                 maxNIRCam_PA_data.append(maxNIRCam_PA)
-                minNIRSpec_PA_data.append(minNIRSpec_PA) 
+                minNIRSpec_PA_data.append(minNIRSpec_PA)
                 maxNIRSpec_PA_data.append(maxNIRSpec_PA)
                 minNIRISS_PA_data.append(minNIRISS_PA)
                 maxNIRISS_PA_data.append(maxNIRISS_PA)
                 minMIRI_PA_data.append(minMIRI_PA)
                 maxMIRI_PA_data.append(maxMIRI_PA)
                 minFGS_PA_data.append(minFGS_PA)
-                maxFGS_PA_data.append(maxFGS_PA)            
+                maxFGS_PA_data.append(maxFGS_PA)
                 #print '%7.1f %6.2f %6.2f %6.2f' % (atime, V3PA, NIRCam_PA, NIRSpec_PA)
                 fmt = '{}' + '   {:6.2f} {:6.2f}'*6
                 print(fmt.format(
@@ -285,7 +285,7 @@ def main(args):
                 maxV3PA_data.append(np.nan)
                 minNIRCam_PA_data.append(np.nan)
                 maxNIRCam_PA_data.append(np.nan)
-                minNIRSpec_PA_data.append(np.nan) 
+                minNIRSpec_PA_data.append(np.nan)
                 maxNIRSpec_PA_data.append(np.nan)
                 minNIRISS_PA_data.append(np.nan)
                 maxNIRISS_PA_data.append(np.nan)
@@ -294,11 +294,11 @@ def main(args):
                 minFGS_PA_data.append(np.nan)
                 maxFGS_PA_data.append(np.nan)
 
-        tab = Table([times, minV3PA_data, maxV3PA_data, minNIRCam_PA_data, maxNIRCam_PA_data, 
-            minNIRSpec_PA_data, maxNIRSpec_PA_data, minNIRISS_PA_data, maxNIRISS_PA_data, 
-            minMIRI_PA_data, maxMIRI_PA_data, minFGS_PA_data, maxFGS_PA_data], 
-            names=('Date', 'V3PA min', 'V3PA max', 'NIRCam min', 'NIRCam max', 
-                'NIRSpec min', 'NIRSpec max', 'NIRISS min', 'NIRISS max', 
+        tab = Table([times, minV3PA_data, maxV3PA_data, minNIRCam_PA_data, maxNIRCam_PA_data,
+            minNIRSpec_PA_data, maxNIRSpec_PA_data, minNIRISS_PA_data, maxNIRISS_PA_data,
+            minMIRI_PA_data, maxMIRI_PA_data, minFGS_PA_data, maxFGS_PA_data],
+            names=('Date', 'V3PA min', 'V3PA max', 'NIRCam min', 'NIRCam max',
+                'NIRSpec min', 'NIRSpec max', 'NIRISS min', 'NIRISS max',
                 'MIRI min', 'MIRI max', 'FGS min', 'FGS max'))
 
         # Plot observing windows
@@ -391,12 +391,12 @@ def main(args):
             fig, ax = plt.subplots(figsize=(14,8))
             plot_single_instrument(ax, 'FGS', times, minFGS_PA_data, maxFGS_PA_data)
             ax.set_xlim(Time(search_start, format='mjd').datetime, Time(search_end, format='mjd').datetime)
-        
+
         if args.name is not None:
             targname = args.name
         else:
             targname = ''
-        fig.suptitle(targname+" (RA = {}, DEC = {})".format(args.ra, args.dec), fontsize=18)               
+        fig.suptitle(targname+" (RA = {}, DEC = {})".format(args.ra, args.dec), fontsize=18)
         fig.tight_layout()
         fig.subplots_adjust(top=0.88)
 
@@ -415,7 +415,7 @@ def plot_single_instrument(ax, instrument_name, t, min_pa, max_pa):
     if np.any(min_pa > max_pa):
         minpa_lt_maxpa = min_pa < max_pa
         minpa_gt_maxpa = min_pa > max_pa
-        
+
         max_pa_upper = np.copy(max_pa)
         min_pa_upper = np.copy(min_pa)
         max_pa_upper[minpa_gt_maxpa] = 360
@@ -437,14 +437,14 @@ def plot_single_instrument(ax, instrument_name, t, min_pa, max_pa):
         ax.fill_between(t, min_pa, max_pa, edgecolor='.7', facecolor='.7', lw=2)
         ax.set_ylabel("Available Position Angle (Degree)")
         ax.set_title(instrument_name)
-        ax.fmt_xdata = DateFormatter('%Y-%m-%d')    
+        ax.fmt_xdata = DateFormatter('%Y-%m-%d')
 
 
     else:
         ax.fill_between(t, min_pa, max_pa, edgecolor='none', facecolor='.7')
         ax.set_ylabel("Available Position Angle (Degree)")
         ax.set_title(instrument_name)
-        ax.fmt_xdata = DateFormatter('%Y-%m-%d')    
+        ax.fmt_xdata = DateFormatter('%Y-%m-%d')
 
 if __name__ == '__main__':
     try:

@@ -31,4 +31,4 @@ def dist(obj1_c1,obj1_c2,obj2_c1,obj2_c2):
     """angular distance betrween two objects, positions specified in spherical coordinates."""
     x = cos(obj2_c2)*cos(obj1_c2)*cos(obj2_c1-obj1_c1) + sin(obj2_c2)*sin(obj1_c2)
     return acos(unit_limit(x))
-    
+
