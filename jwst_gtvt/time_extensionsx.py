@@ -1,5 +1,6 @@
 #! /usr/bin/env/python
 #Module time_extensions.py
+from __future__ import absolute_import, division, print_function
 
 """Module containing library functions for time manipulation.
 Standard for time representation in this project is fractional days.

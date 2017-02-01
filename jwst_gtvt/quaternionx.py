@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+from __future__ import absolute_import, division, print_function
+
 #quaternion module
 
 """Version 4 September 9, 2010 WMK
